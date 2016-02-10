@@ -25,9 +25,10 @@ import javax.security.cert.X509Certificate;
  */
 public class client {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] t) throws Exception {
         String host = null;
         int port = -1;
+        String[] args = {"localhost", "9876"};
         for (int i = 0; i < args.length; i++) {
             System.out.println("args[" + i + "] = " + args[i]);
         }
@@ -52,8 +53,8 @@ public class client {
                 KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
                 TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
                 SSLContext ctx = SSLContext.getInstance("TLS");
-                ks.load(new FileInputStream("clientkeystore"), password);  // keystore password (storepass)
-				ts.load(new FileInputStream("clienttruststore"), password); // truststore password (storepass);
+                ks.load(new FileInputStream("certificates/Nurse/nurseKeyStore"), password);  // keystore password (storepass)
+				ts.load(new FileInputStream("certificates/Nurse/nurseTrustStore"), password); // truststore password (storepass);
 				kmf.init(ks, password); // user password (keypass)
 				tmf.init(ts); // keystore can be used as truststore here
 				ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
