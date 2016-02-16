@@ -16,7 +16,10 @@ public class Record {
 	}
 	
 	public String getRecord(Person p) {
-		return data;
+		if(p.equals(patient) || p.equals(nurse) || p.equals(doctor) || p.getDivision().equals(division))
+			return data;
+		
+		return null;
 	}
 	
 }
