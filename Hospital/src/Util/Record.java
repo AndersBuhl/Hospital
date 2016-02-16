@@ -1,6 +1,7 @@
 package Util;
 
 public class Record {
+	private recordId;
 	private Patient patient;
 	private Doctor doctor;
 	private Nurse nurse;
