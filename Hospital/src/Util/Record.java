@@ -4,12 +4,19 @@ public class Record {
 	private Patient patient;
 	private Doctor doctor;
 	private Nurse nurse;
+	private Division division;
 	private String data;
 	
-	public Record(Patient patient, Doctor doctor, Nurse nurse, String data) {
+	public Record(Patient patient, Doctor doctor, Nurse nurse, Division division, String data) {
 		this.patient = patient;
 		this.doctor = doctor;
 		this.nurse = nurse;
+		this.division = division;
 		this.data = data;
 	}
+	
+	public String getRecord(Person p) {
+		return data;
+	}
+	
 }
