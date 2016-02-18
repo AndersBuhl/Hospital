@@ -17,16 +17,16 @@ public class Hospital {
 	
 	private void genRecords(){
 		String filePath = new File("").getAbsolutePath();
-        System.out.println (filePath);
+        //System.out.println (filePath);
         BufferedReader reader;
 
         try
         {                    
-        	reader = new BufferedReader(new FileReader(filePath + "/src/Util/RecordsTest.txt"));
+        	reader = new BufferedReader(new FileReader(filePath + "/src/Util/Records.txt"));
             String line = null;         
             while ((line = reader.readLine()) != null)
             {
-                if (!(line.startsWith("*")))
+                if (!(line.startsWith("//")))
                 {
                     System.out.println(line);
                 }
