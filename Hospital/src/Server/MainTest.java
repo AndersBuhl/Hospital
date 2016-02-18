@@ -1,5 +1,7 @@
 package Server;
 
+import java.util.Scanner;
+
 import Util.Hospital;
 
 
@@ -9,6 +11,10 @@ public class MainTest {
 		System.out.println("Test Begins");
 		Hospital host = new Hospital();
 		
+		Scanner in = new Scanner(System.in);
+		System.out.println("Type command");
+		String s = in.next();
+		in.close();
+		host.readInput(s);
 	}
-
 }
