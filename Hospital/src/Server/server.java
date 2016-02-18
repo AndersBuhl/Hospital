@@ -46,7 +46,7 @@ public class server implements Runnable {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			
 			StringBuilder sb = new StringBuilder();
-			sb.append("What do you want to do? Choose a number (1-3)\n");
+			sb.append("What do you want to do? Choose a number\n");
 			sb.append("1. Read a record\n");
 			if(id[1].toLowerCase().equals("doctor")) {
 				sb.append("2. Make a new record\n");

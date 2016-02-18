@@ -5,9 +5,10 @@ public abstract class Person {
 	private String name;
 	private String id;
 	
-	public Person(Division division, String name) {
+	public Person(Division division, String name, String id) {
 		this.division = division;
 		this.name = name;
+		this.id = id;
 	}
 
 	public Division getDivision() {
