@@ -22,7 +22,7 @@ public class Hospital {
 
         try
         {                    
-        	reader = new BufferedReader(new FileReader(filePath + "/src/Util/RecordsTest.txt"));
+        	reader = new BufferedReader(new FileReader(filePath + "/data/Records.txt"));
             String line = null;         
             while ((line = reader.readLine()) != null)
             {
