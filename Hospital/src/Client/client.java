@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.security.KeyStore;
+import java.util.Scanner;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -25,10 +26,15 @@ import javax.security.cert.X509Certificate;
  */
 public class client {
 
-    public static void main(String[] t) throws Exception {
+    public static void main(String[] args) throws Exception {
         String host = null;
         int port = -1;
-        String[] args = {"localhost", "9876"};
+        if(args.length < 2) {
+        	args = new String[2];
+        	args[0] = "localhost";
+        	args[1] = "9876";
+        }
+        
         for (int i = 0; i < args.length; i++) {
             System.out.println("args[" + i + "] = " + args[i]);
         }
@@ -47,15 +53,22 @@ public class client {
         try { /* set up a key manager for client authentication */
             SSLSocketFactory factory = null;
             try {
+            	Scanner scan = new Scanner(System.in);
+            	System.out.println("Ange ditt användar ID: ");
+            	String id = scan.next();
+            	scan.nextLine();
+            	System.out.println("Ange ditt lösenord: ");
+            	String passwd = scan.next();
+            	scan.nextLine();
                 char[] password = "password".toCharArray();
                 KeyStore ks = KeyStore.getInstance("JKS");
                 KeyStore ts = KeyStore.getInstance("JKS");
                 KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
                 TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
                 SSLContext ctx = SSLContext.getInstance("TLS");
-                ks.load(new FileInputStream("certificates/Client/clientKeyStore"), password);  // keystore password (storepass)
+                ks.load(new FileInputStream("certificates/Client/" + id), password);  // keystore password (storepass)
 				ts.load(new FileInputStream("certificates/Client/clientTrustStore"), password); // truststore password (storepass);
-				kmf.init(ks, "janspassword".toCharArray()); // user password (keypass)
+				kmf.init(ks, passwd.toCharArray()); // user password (keypass)
 				tmf.init(ts); // keystore can be used as truststore here
 				ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
                 factory = ctx.getSocketFactory();
