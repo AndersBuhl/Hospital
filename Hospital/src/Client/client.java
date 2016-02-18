@@ -66,7 +66,7 @@ public class client {
                 KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
                 TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
                 SSLContext ctx = SSLContext.getInstance("TLS");
-                ks.load(new FileInputStream("certificates/Client/" + id), password);  // keystore password (storepass)
+                ks.load(new FileInputStream("certificates/Client/" + id), passwd.toCharArray());  // keystore password (storepass)
 				ts.load(new FileInputStream("certificates/Client/clientTrustStore"), password); // truststore password (storepass);
 				kmf.init(ks, passwd.toCharArray()); // user password (keypass)
 				tmf.init(ts); // keystore can be used as truststore here
@@ -76,7 +76,7 @@ public class client {
                 throw new IOException(e.getMessage());
             }
             SSLSocket socket = (SSLSocket)factory.createSocket(host, port);
-            System.out.println("\nsocket before handshake:\n" + socket + "\n");
+//            System.out.println("\nsocket before handshake:\n" + socket + "\n");
 
             /*
              * send http request
@@ -89,12 +89,12 @@ public class client {
             SSLSession session = socket.getSession();
             X509Certificate cert = (X509Certificate)session.getPeerCertificateChain()[0];
             String subject = cert.getSubjectDN().getName();
-            System.out.println("certificate name (subject DN field) on certificate received from server:\n" + subject + "\n");
-
-            System.out.println("issuer name: " + cert.getIssuerDN().getName());
-            System.out.println("serial number: " + cert.getSerialNumber());
-            System.out.println("socket after handshake:\n" + socket + "\n");
-            System.out.println("secure connection established\n\n");
+//            System.out.println("certificate name (subject DN field) on certificate received from server:\n" + subject + "\n");
+//
+//            System.out.println("issuer name: " + cert.getIssuerDN().getName());
+//            System.out.println("serial number: " + cert.getSerialNumber());
+//            System.out.println("socket after handshake:\n" + socket + "\n");
+//            System.out.println("secure connection established\n\n");
 
             BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
