@@ -1,6 +1,7 @@
-package Util;
+package Server;
 
-import Server.Hospital;
+import Util.Hospital;
+
 
 public class MainTest {
 
