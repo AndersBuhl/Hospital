@@ -10,8 +10,10 @@ import javax.security.cert.X509Certificate;
 public class server implements Runnable {
 	private ServerSocket serverSocket = null;
 	private static int numConnectedClients = 0;
+	private Hospital hospital;
 
 	public server(ServerSocket ss) throws IOException {
+		hospital = new Hospital();
 		serverSocket = ss;
 		newListener();
 	}
@@ -34,29 +36,33 @@ public class server implements Runnable {
 			// connection(s)\n");
 
 			// CN=dic14jan, OU=Doctor, O=Head, L=Jan, ST=Unknown, C=Unknown
+			System.out.println("Subject = " + subject);
 			String[] id = new String[4];
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 3; i++) {
 				id[i] = subject.substring(subject.indexOf('=') + 1, subject.indexOf(','));
 				subject = subject.substring(subject.indexOf(',') + 1);
 			}
+			id[3] = subject.substring(subject.indexOf('=') + 1, subject.length());
 			
 			PrintWriter out = null;
 			BufferedReader in = null;
 			out = new PrintWriter(socket.getOutputStream(), true);
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			
-			StringBuilder sb = new StringBuilder();
-			sb.append("What do you want to do? Choose a number\n");
-			sb.append("1. Read a record\n");
-			if(id[1].toLowerCase().equals("doctor")) {
-				sb.append("2. Make a new record\n");
-			}
-			if(id[1].toLowerCase().equals("agent")) {
-				sb.append("2. Remove a record\n");
-			}
+			hospital.login(cert.getSerialNumber(), id);
 			
-			sb.append("-end");
-			out.println(sb.toString());
+//			StringBuilder sb = new StringBuilder();
+//			sb.append("What do you want to do? Choose a number\n");
+//			sb.append("1. Read a record\n");
+//			if(id[1].toLowerCase().equals("doctor")) {
+//				sb.append("2. Make a new record\n");
+//			}
+//			if(id[1].toLowerCase().equals("agent")) {
+//				sb.append("2. Remove a record\n");
+//			}
+//			
+//			sb.append("-end");
+//			out.println(sb.toString());
 			
 			String clientMsg = null;
 			while ((clientMsg = in.readLine()) != null) {
