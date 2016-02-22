@@ -1,3 +1,5 @@
 /.metadata/*
 /.recommenders/*
 Hospital/.classpath
+Hospital/.metadata/*
+Hospital/eclimd.log
