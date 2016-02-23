@@ -29,11 +29,20 @@ public class Record {
 		
 	}
 	
+	/*
 	public String getRecord(Person p) {
 		if(p.equals(patient) || p.equals(nurse) || p.equals(doctor) || p.getDivision().equals(division))
 			return data;
 		
 		return null;
+	}
+	*/
+	
+	public boolean equals(String s) {
+		if(s.equals(recordId)) {
+			return true;
+		}
+		return false;
 	}
 	
 	public String printInfo(){

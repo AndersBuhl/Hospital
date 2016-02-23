@@ -64,12 +64,27 @@ public class Hospital {
 		switch (command) {
 		case "read":
 			System.err.println("READING FILE");
+			Record rec = findRecord(recordId);
+			if(rec == null){
+				System.out.println("The requested file: " +recordId+ " was not found");
+				return;
+			}
+			System.out.println(rec.printInfo());
 			break;
 		
 		default: 	
 			System.err.println("COMMAND NOT FOUND");
 			break;
 		}
+	}
+	
+	private Record findRecord(String recordId){
+		for(int i = 0; i < records.size(); i++){
+			if(records.get(i).equals(recordId)){
+				return records.get(i);
+			}
+		}
+		return null;
 	}
 	
 	public Person login(BigInteger serial, String[] user) {
