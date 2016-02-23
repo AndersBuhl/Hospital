@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import java.util.Scanner;
-
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,8 +46,13 @@ public class Hospital {
 	public void readInput(String input){
 		String splitter = " ";
     	String[] para = input.split(splitter);
+    	if(input.equals("help")){
+    		System.out.println("Command should look like this: 'operation recordId'");
+    		System.out.println("Commands are: read, alter, create, delete");
+    		return;
+    	}
     	if(para.length <= 1 || para.length > 2 || input.equals("help")){
-    		System.out.println("Missing prameters in command, type help for commands");
+    		System.out.println("Faulty prameters in command, type help for commands");
     		return;
     	}
     	String command = para[0];
@@ -57,11 +60,12 @@ public class Hospital {
     	readCommand(command, recordId); //Input parameters to readCommand
 	}
 	
-	public void readCommand(String command, String recordId){
+	private void readCommand(String command, String recordId){
 		switch (command) {
 		case "read":
 			System.err.println("READING FILE");
 			break;
+		
 		default: 	
 			System.err.println("COMMAND NOT FOUND");
 			break;
