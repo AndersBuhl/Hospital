@@ -29,6 +29,16 @@ public class Hospital {
 	public Person login(BigInteger serial, String[] user) {
 		Person p = persons.get(serial);
 		if (p == null) {
+			Division div = null;
+			for(Division d : divisions) {
+				if(user[2].equals(d)) {
+					div = d;
+				}
+			}
+			if(div == null) {
+				System.err.println("Division " + user[2] + " doesn't exist");
+				return null;
+			}
 			switch (user[1].toLowerCase()) {
 			case "doctor":
 				p = new Doctor(user[3], divisions.get(divisions.indexOf(user[2])), user[0], serial);

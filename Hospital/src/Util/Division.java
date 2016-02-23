@@ -14,4 +14,8 @@ public class Division {
 		
 		return false;
 	}
+	
+	public String toString() {
+		return divisionName;
+	}
 }

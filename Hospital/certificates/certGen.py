@@ -13,6 +13,8 @@ while passw != passw2 :
     passw = raw_input('\nEnter a password: ')
     passw2 = raw_input('\nRe-enter the password: ')
 
+#Ange password till CA
+
 print("\n")
 subprocess.Popen("stty echo", shell=True)
 subprocess.Popen("keytool -genkeypair -alias " + alias + " -keyalg rsa -dname \"CN=" + alias + ", OU=" + title + ", O=" + division + ", L=" + name + "\" -keystore Client/" + alias + " -storepass " + passw + " -keypass " + passw, shell=True)
