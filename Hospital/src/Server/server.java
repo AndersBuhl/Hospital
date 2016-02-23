@@ -3,9 +3,12 @@ package Server;
 import java.io.*;
 import java.net.*;
 import java.security.KeyStore;
+
 import javax.net.*;
 import javax.net.ssl.*;
 import javax.security.cert.X509Certificate;
+
+import Util.Hospital;
 
 public class server implements Runnable {
 	private ServerSocket serverSocket = null;
@@ -13,7 +16,7 @@ public class server implements Runnable {
 	private Hospital hospital;
 
 	public server(ServerSocket ss) throws IOException {
-		hospital = new Hospital();
+		Hospital hospital = new Hospital();
 		serverSocket = ss;
 		newListener();
 	}

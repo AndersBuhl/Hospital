@@ -15,6 +15,6 @@ public class MainTest {
 		System.out.println("Type command");
 		String s = in.nextLine();
 		in.close();
-		host.readInput(s);
+		//host.readInput(s);
 	}
 }
