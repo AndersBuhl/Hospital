@@ -1,5 +1,12 @@
 package Util;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
 public class Record {
 	private static int nbrRecords = 0;
 	private int recordNbr;
@@ -31,12 +38,24 @@ public class Record {
 	
 	
 	public String getRecord(Person p) {
-		if(p.equals(patient) || p.equals(nurse) || p.equals(doctor) || p.getDivision().equals(division))
+		if(p.equals(patient) || p.equals(nurse) || p.equals(doctor) || p.getDivision().equals(division)){
 			return data;
-		
-		return null;
+		}
+		return "PERMISSION DENIED";
 	}
-	
+	public void alterRecord(Person p){
+		if(p.equals(doctor) || p.equals(nurse)){
+			System.out.println(data);
+			System.out.println("Type the new data:");
+			Scanner scan = new Scanner(System.in);
+			String s = scan.nextLine();
+			data = s;
+			System.out.println("change complete");
+		} else {
+			System.out.println("PERMISSION DENIED");
+		}
+	}
+		
 	public boolean equals(String s) {
 		if(s.equals(recordId)) {
 			return true;
@@ -46,12 +65,12 @@ public class Record {
 	
 	public String printInfo(){
 		StringBuilder str = new StringBuilder();
-		str.append(patient + " ");
-		str.append(doctor + " ");
-		str.append(nurse + " ");
-		str.append(division + " ");
-		str.append(data + " ");
-		str.append(recordId + " ");
+		str.append(patient + ":");
+		str.append(doctor + ":");
+		str.append(nurse + ":");
+		str.append(division + ":");
+		str.append(data + ":");
+		str.append(recordId);
 		return str.toString();
 	}
 	

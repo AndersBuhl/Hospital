@@ -1,16 +1,17 @@
 package Util;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-
+import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import Util.Agent;
-import Util.Division;
 import Util.Doctor;
 import Util.Nurse;
 import Util.Patient;
@@ -19,31 +20,16 @@ import Util.Person;
 
 public class Hospital {
 	private HashMap<BigInteger, Person> persons;
-	private ArrayList<Division> divisions;
 	private ArrayList<Record> records;
 	private Agent agent;
 
 	public Hospital() {
 		persons = new HashMap<BigInteger, Person>();
-		divisions = new ArrayList<Division>();
 		records = new ArrayList<Record>();
 		genRecords();
 	}
-	/*
-	public void readInput(String input){
-		String command = input;
-		StringBuilder builder = new StringBuilder();
-		Scanner scan = new Scanner(command);
-		if(scan.hasNext()){  //Will read to the first whitespace
-			builder.append(scan.next());
-		}
-		command = builder.toString();
-		System.out.println(command);
-		readCommand(command);
-		scan.close();
-	}
-	*/
-	public void readInput(String input){
+	
+	public void readInput(String input, Person p){
 		String splitter = " ";
     	String[] para = input.split(splitter);
     	if(input.equals("help")){
@@ -57,19 +43,36 @@ public class Hospital {
     	}
     	String command = para[0];
     	String recordId = para[1];
-    	readCommand(command, recordId); //Input parameters to readCommand
+    	readCommand(command, recordId, p); //Input parameters to readCommand
 	}
 	
-	private void readCommand(String command, String recordId){
+	private void readCommand(String command, String recordId, Person p){
+		Record rec = null;
 		switch (command) {
 		case "read":
-			System.err.println("READING FILE");
-			Record rec = findRecord(recordId);
+			rec = findRecord(recordId);
 			if(rec == null){
 				System.out.println("The requested file: " +recordId+ " was not found");
 				return;
 			}
-			System.out.println(rec.printInfo());
+			String data = rec.getRecord(p);
+			System.out.println(data);
+			break;
+		case "alter":
+			rec = findRecord(recordId);
+			if(rec == null){
+				System.out.println("The requested file: " +recordId+ " was not found");
+				return;
+			}
+			rec.alterRecord(p);
+			upDateRecord();
+			break;
+		case "delete":
+			System.out.println("DELETING");
+			break;
+		case "create":
+			System.out.println("CREATING RECORD");
+			
 			break;
 		
 		default: 	
@@ -90,28 +93,18 @@ public class Hospital {
 	public Person login(BigInteger serial, String[] user) {
 		Person p = persons.get(serial);
 		if (p == null) {
-			Division div = null;
-			for(Division d : divisions) {
-				if(user[2].equals(d)) {
-					div = d;
-				}
-			}
-			if(div == null) {
-				System.err.println("Division " + user[2] + " doesn't exist");
-				return null;
-			}
 			switch (user[1].toLowerCase()) {
 			case "doctor":
-				p = new Doctor(user[3], divisions.get(divisions.indexOf(user[2])), user[0], serial);
+				p = new Doctor(user[3], user[2], user[0], serial);
 				persons.put(serial, p);
 				break;
 			case "nurse":
-				p = new Nurse(user[3], divisions.get(divisions.indexOf(user[2])), user[0], serial);
+				p = new Nurse(user[3], user[2], user[0], serial);
 				persons.put(serial, p);
 				break;
 			case "agency":
 				if (agent == null) {
-					agent = new Agent(divisions.get(divisions.indexOf(user[2])), user[3], user[0], serial);
+					agent = new Agent(user[2], user[3], user[0], serial);
 					p = agent;
 				} else {
 					return null;
@@ -143,9 +136,6 @@ public class Hospital {
                 if (!(line.startsWith("//"))) {
                 	String splitter = "[:]";
                 	String[] para = line.split(splitter);
-//                	for(int i = 0; i < para.length; i++){
-//                		System.out.println(para[i]);
-//                	}
                 	records.add(new Record(para[0],para[1],para[2],para[3],para[4],para[5]));
                 }
             }        
@@ -154,9 +144,18 @@ public class Hospital {
         catch (IOException ex) {
             ex.printStackTrace();
         }
-//        System.out.println("OUTCOME");
-//        String test = records.get(0).printInfo();
-//        String test2 = records.get(1).printInfo();
-//        System.out.println(test + "\n" + test2);
+	}
+	
+	private void upDateRecord(){
+		String filePath = new File("").getAbsolutePath();
+		try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filePath + "/data/Records2.txt", true)))) {
+		    for(int i = 0; i < records.size(); i++){
+		    	out.println(records.get(i).printInfo());
+		    }
+		}catch (IOException e) {
+		    e.printStackTrace();
+		    return;
+		}
+		System.out.println("Save complete \n");
 	}
 }
