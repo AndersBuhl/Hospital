@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 import Util.Agent;
 import Util.Doctor;
@@ -72,7 +73,22 @@ public class Hospital {
 			break;
 		case "create":
 			System.out.println("CREATING RECORD");
+			String patient;
+			String nurse; 
+			String division;
+			String Rdata;
+			String RrecordId;
+			Scanner scan = new Scanner(System.in);
+			System.out.println("Type Patient id:");
+			patient = scan.nextLine();
+			System.out.println("Type Nurse id:");
+			nurse = scan.nextLine();
+			System.out.println("Type data about the patient:");
+			Rdata = scan.nextLine();
+			System.out.println("Type record id:");
+			RrecordId = scan.nextLine();
 			
+			Record newRec = new Record(patient, p.getId(), nurse, p.getDivision(), Rdata, RrecordId);
 			break;
 		
 		default: 	

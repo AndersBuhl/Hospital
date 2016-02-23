@@ -32,4 +32,7 @@ public abstract class Person {
 		}
 		return false;
 	}
+	public String getId(){
+		return id;
+	}
 }
