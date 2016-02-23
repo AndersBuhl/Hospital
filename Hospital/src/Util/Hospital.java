@@ -48,7 +48,7 @@ public class Hospital {
 	public void readInput(String input){
 		String splitter = " ";
     	String[] para = input.split(splitter);
-    	if(para.length <= 1 || input.equals("help")){
+    	if(para.length <= 1 || para.length > 2 || input.equals("help")){
     		System.out.println("Missing prameters in command, type help for commands");
     		return;
     	}
