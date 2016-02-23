@@ -13,7 +13,7 @@ public class MainTest {
 		
 		Scanner in = new Scanner(System.in);
 		System.out.println("Type command");
-		String s = in.next();
+		String s = in.nextLine();
 		in.close();
 		host.readInput(s);
 	}

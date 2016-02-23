@@ -1,8 +1,10 @@
 package Util;
 
+import java.math.BigInteger;
+
 public class Patient extends Person{
 	
-	public Patient(String name, String id) {
-		super(new NullDivision(), name, id);
+	public Patient(String name, String id, BigInteger serial) {
+		super(new NullDivision(), name, id, serial);
 	}
 }

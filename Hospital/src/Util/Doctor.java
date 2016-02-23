@@ -1,9 +1,11 @@
 package Util;
 
+import java.math.BigInteger;
+
 public class Doctor extends Person {
 
-	public Doctor(Division division, String name, String id) {
-		super(division, name, id);
+	public Doctor(String name, Division division, String id, BigInteger serial) {
+		super(division, name, id, serial);
 	}
 
 }
