@@ -1,5 +1,8 @@
 /.metadata/*
 /.recommenders/*
-Hospital/.classpath
-Hospital/.metadata/*
-Hospital/eclimd.log
+/Hospital/.classpath
+/Hospital/.metadata/*
+/Hospital/eclimd.log
+.gitignore
+.gitignore~
+/Hospital/data/Records2.txt

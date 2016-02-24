@@ -1,8 +1,6 @@
 package Util;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
@@ -38,21 +36,25 @@ public class Record {
 	
 	
 	public String getRecord(Person p) {
-		if(p.equals(patient) || p.equals(nurse) || p.equals(doctor) || p.getDivision().equals(division)){
+		if(p.equals(patient) || p.equals(nurse) || p.equals(doctor) || p.getDivision().toLowerCase().equals(division.toLowerCase())){
 			return data;
 		}
 		return "PERMISSION DENIED";
 	}
-	public void alterRecord(Person p){
+	
+	public String agentData() {
+		return data;
+	}
+	public void alterRecord(Person p, BufferedReader in, PrintWriter out) throws IOException{
 		if(p.equals(doctor) || p.equals(nurse)){
-			System.out.println(data);
-			System.out.println("Type the new data:");
-			Scanner scan = new Scanner(System.in);
-			String s = scan.nextLine();
+			out.println(data);
+			out.println("Type the new data:");
+			out.println("-end");
+			String s = in.readLine();
 			data = s;
-			System.out.println("change complete");
+			out.println("change complete");
 		} else {
-			System.out.println("PERMISSION DENIED");
+			out.println("PERMISSION DENIED");
 		}
 	}
 		

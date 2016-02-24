@@ -92,6 +92,7 @@ public class client {
 			socket.startHandshake();
 
 			SSLSession session = socket.getSession();
+			System.out.println(session.getCipherSuite());
 			X509Certificate cert = (X509Certificate) session.getPeerCertificateChain()[0];
 			String subject = cert.getSubjectDN().getName();
 			// System.out.println("certificate name (subject DN field) on
@@ -107,21 +108,24 @@ public class client {
 			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			String msg, line;
-			while(!(line=in.readLine()).equals("-end")){
-				System.out.println(line);
-			}
+			
 			for (;;) {
+				while(!(line=in.readLine()).equals("-end")) {
+					System.out.println(line);
+				}
 				System.out.print(">");
 				msg = read.readLine();
 				if (msg.equalsIgnoreCase("quit")) {
 					break;
 				}
-				System.out.print("sending '" + msg + "' to server...");
 				out.println(msg);
 				out.flush();
-				System.out.println("done");
-
-				System.out.println("received '" + in.readLine() + "' from server\n");
+//				System.out.print("sending '" + msg + "' to server...");
+//				out.println(msg);
+//				out.flush();
+//				System.out.println("done");
+//
+//				System.out.println("received '" + in.readLine() + "' from server\n");
 			}
 			in.close();
 			out.close();

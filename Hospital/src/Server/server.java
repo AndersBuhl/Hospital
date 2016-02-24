@@ -1,14 +1,25 @@
 package Server;
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.security.KeyStore;
 
-import javax.net.*;
-import javax.net.ssl.*;
+import javax.net.ServerSocketFactory;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLServerSocket;
+import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.TrustManagerFactory;
 import javax.security.cert.X509Certificate;
 
 import Util.Hospital;
+import Util.Person;
 
 public class server implements Runnable {
 	private ServerSocket serverSocket = null;
@@ -16,7 +27,7 @@ public class server implements Runnable {
 	private Hospital hospital;
 
 	public server(ServerSocket ss) throws IOException {
-		Hospital hospital = new Hospital();
+		hospital = new Hospital();
 		serverSocket = ss;
 		newListener();
 	}
@@ -26,6 +37,7 @@ public class server implements Runnable {
 			SSLSocket socket = (SSLSocket) serverSocket.accept();
 			newListener();
 			SSLSession session = socket.getSession();
+			System.out.println(session.getCipherSuite());
 			X509Certificate cert = (X509Certificate) session.getPeerCertificateChain()[0];
 			String subject = cert.getSubjectDN().getName();
 			// numConnectedClients++;
@@ -52,7 +64,8 @@ public class server implements Runnable {
 			out = new PrintWriter(socket.getOutputStream(), true);
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			
-			hospital.login(cert.getSerialNumber(), id);
+			System.out.println(cert.getSerialNumber());
+			Person p = hospital.login(cert.getSerialNumber(), id);
 			
 //			StringBuilder sb = new StringBuilder();
 //			sb.append("What do you want to do? Choose a number\n");
@@ -67,12 +80,22 @@ public class server implements Runnable {
 //			sb.append("-end");
 //			out.println(sb.toString());
 			
+			StringBuilder sb = new StringBuilder();
+			
+			sb.append("Enter a command\n");
+			sb.append("-end");
+			
+			out.println(sb.toString());
+			
 			String clientMsg = null;
 			while ((clientMsg = in.readLine()) != null) {
-				String rev = new StringBuilder(clientMsg).reverse().toString();
-				System.out.println("received '" + clientMsg + "' from client");
-				System.out.print("sending '" + rev + "' to client...");
-				out.println(rev);
+//				String rev = new StringBuilder(clientMsg).reverse().toString();
+//				System.out.println("received '" + clientMsg + "' from client");
+//				System.out.print("sending '" + rev + "' to client...");
+//				out.println(rev);
+				System.out.println(clientMsg);
+				hospital.readInput(clientMsg, p, in, out);
+				out.println("-end");
 				out.flush();
 				System.out.println("done\n");
 			}
