@@ -6,3 +6,4 @@
 .gitignore
 .gitignore~
 /Hospital/data/Records2.txt
+/Hospital/data/log.txt

@@ -57,7 +57,13 @@ public class server implements Runnable {
 				id[i] = subject.substring(subject.indexOf('=') + 1, subject.indexOf(','));
 				subject = subject.substring(subject.indexOf(',') + 1);
 			}
-			id[3] = subject.substring(subject.indexOf('=') + 1, subject.length());
+			int index = subject.indexOf(',');
+			if(index == -1) {
+				id[3] = subject.substring(subject.indexOf('=') + 1, subject.length());
+			} else {
+				id[3] = subject.substring(subject.indexOf('=') + 1, index);
+			}
+			
 			
 			PrintWriter out = null;
 			BufferedReader in = null;

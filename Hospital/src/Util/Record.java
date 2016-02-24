@@ -39,13 +39,13 @@ public class Record {
 		if(p.equals(patient) || p.equals(nurse) || p.equals(doctor) || p.getDivision().toLowerCase().equals(division.toLowerCase())){
 			return data;
 		}
-		return "PERMISSION DENIED";
+		return null;
 	}
 	
 	public String agentData() {
 		return data;
 	}
-	public void alterRecord(Person p, BufferedReader in, PrintWriter out) throws IOException{
+	public boolean alterRecord(Person p, BufferedReader in, PrintWriter out) throws IOException{
 		if(p.equals(doctor) || p.equals(nurse)){
 			out.println(data);
 			out.println("Type the new data:");
@@ -53,8 +53,10 @@ public class Record {
 			String s = in.readLine();
 			data = s;
 			out.println("change complete");
+			return true;
 		} else {
 			out.println("PERMISSION DENIED");
+			return false;
 		}
 	}
 		

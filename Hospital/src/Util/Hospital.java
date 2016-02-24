@@ -8,27 +8,88 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.Scanner;
-
-import Util.Agent;
-import Util.Doctor;
-import Util.Nurse;
-import Util.Patient;
-import Util.Person;
 
 public class Hospital {
 	private HashMap<BigInteger, Person> persons;
 	private ArrayList<Record> records;
 	private Agent agent;
+	private String[] divisions = {"head", "knee", "shoulder", "feet", "eye"};
 
 	public Hospital() {
 		persons = new HashMap<BigInteger, Person>();
 		records = new ArrayList<Record>();
 		genRecords();
+		loadPersons();
+	}
+	
+	private void loadPersons() {
+		String filePath = new File("").getAbsolutePath();
+		BufferedReader reader;
+		try {
+			reader = new BufferedReader(new FileReader(filePath + "/data/Persons.txt"));
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				if (!(line.startsWith("//")) && !(line.startsWith(":"))) {
+					String splitter = "[:]";
+					String[] para = line.split(splitter);
+					switch(para[2]) {
+					case "doctor":
+						persons.put(new BigInteger(para[0]), new Doctor(para[4], para[3], para[1], new BigInteger(para[0])));
+						break;
+					case "nurse":
+						persons.put(new BigInteger(para[0]), new Nurse(para[4], para[3], para[1], new BigInteger(para[0])));
+						break;
+					case "patient":
+						persons.put(new BigInteger(para[0]), new Patient(para[4], para[1], new BigInteger(para[0])));
+						break;
+					case "agent":
+						agent =  new Agent(para[3], para[4], para[1], new BigInteger(para[0]));
+						break;
+					default:
+						break;
+					}
+				}
+			}
+			reader.close();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	private void savePersons() {
+		String filePath = new File("").getAbsolutePath();
+		try (PrintWriter out = new PrintWriter(
+				new BufferedWriter(new FileWriter(filePath + "/data/Persons.txt")))) {
+			out.println("//serial:id:title:division:name");
+			for (BigInteger b : persons.keySet()) {
+				out.println(persons.get(b).printInfo());
+			}
+			if(agent != null) {
+				out.println(agent.printInfo());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
 	}
 
+	public void log(String event, Person p) {
+		String filePath = new File("").getAbsolutePath();
+		try (PrintWriter out = new PrintWriter(
+				new BufferedWriter(new FileWriter(filePath + "/data/log.txt", true)))) {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date date = new Date();
+			out.println("[" + format.format(date) + "] " + p.getId() + ": " + event);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
 	public void readInput(String input, Person p, BufferedReader in, PrintWriter out) throws IOException {
 		String splitter = " ";
 		String[] para = input.split(splitter);
@@ -50,6 +111,7 @@ public class Hospital {
 	private void readCommand(String command, String recordId, Person p, BufferedReader in, PrintWriter out)
 			throws IOException {
 		Record rec = null;
+		StringBuilder sb = new StringBuilder();
 		switch (command) {
 		case "read":
 			rec = findRecord(recordId);
@@ -63,7 +125,17 @@ public class Hospital {
 			} else {
 				data = rec.getRecord(p);
 			}
-			out.println(data);
+			sb.append("read ");
+			
+			if(data == null) {
+				sb.append("denied ");
+				out.println("PERMISSION DENIED");
+			} else {
+				out.println(data);
+			}
+			
+			sb.append(recordId);
+			log(sb.toString(), p);
 			break;
 		case "alter":
 			rec = findRecord(recordId);
@@ -71,11 +143,20 @@ public class Hospital {
 				out.println("The requested file: " + recordId + " was not found");
 				return;
 			}
-			rec.alterRecord(p, in, out);
+			sb.append("alter ");			
+			if(!rec.alterRecord(p, in, out)) {
+				sb.append("denied ");
+			}
+			sb.append(recordId);
 			upDateRecord();
+
+			log(sb.toString(), p);
 			break;
 		case "delete":
 			out.println("DELETING");
+			
+
+			log("delete " + recordId, p);
 			break;
 		case "create":
 			out.println("CREATING RECORD");
@@ -99,6 +180,9 @@ public class Hospital {
 			RrecordId = in.readLine();
 
 			Record newRec = new Record(patient, p.getId(), nurse, p.getDivision(), Rdata, RrecordId);
+			
+
+			log("create record " + recordId, p);
 			break;
 
 		default:
@@ -132,10 +216,10 @@ public class Hospital {
 				if (agent == null) {
 					agent = new Agent(user[2], user[3], user[0], serial);
 					p = agent;
-					return agent;
-				} else {
-					return null;
+					log("logged in", p);
+					savePersons();
 				}
+				return agent;
 			case "patient":
 				p = new Patient(user[3], user[0], serial);
 				persons.put(serial, p);
@@ -146,6 +230,8 @@ public class Hospital {
 			}
 		}
 
+		log("logged in", p);
+		savePersons();
 		return p;
 	}
 

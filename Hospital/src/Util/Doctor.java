@@ -8,4 +8,9 @@ public class Doctor extends Person {
 		super(division, name, id, serial);
 	}
 
+	@Override
+	protected String type() {
+		return "doctor";
+	}
+
 }

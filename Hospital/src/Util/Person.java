@@ -35,4 +35,17 @@ public abstract class Person {
 	public String getId(){
 		return id;
 	}
+	
+	protected abstract String type();
+	
+	public String printInfo() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(serial + ":");
+		sb.append(id + ":");
+		sb.append(type() + ":");
+		sb.append(division + ":");
+		sb.append(name);
+		
+		return sb.toString();
+	}
 }
