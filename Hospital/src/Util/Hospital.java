@@ -115,8 +115,7 @@ public class Hospital {
 		}
 		String command = para[0];
 		String recordId = para[1];
-		readCommand(command, recordId, p, in, out); // Input parameters to
-													// readCommand
+		readCommand(command, recordId, p, in, out);
 	}
 
 	private void readCommand(String command, String recordId, Person p, BufferedReader in, PrintWriter out)
