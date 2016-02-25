@@ -28,7 +28,7 @@ public class MainTest {
 			Person p = new Agent("THE GOOD DOC", "agent", "tpo13dat", null);
 			Person p1 = new Doctor("THE GOOD DOC", "head", "5218", null);
 			Person p2 = new Patient("THE GOOD PAT", "3201", null);
-			host.readInput(s,p, bIn, pOut);
+			host.readInput(s,p1, bIn, pOut);
 		}
 	}
 }

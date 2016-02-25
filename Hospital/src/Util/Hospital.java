@@ -98,6 +98,10 @@ public class Hospital {
 			out.println("Commands are: read, alter, create, delete");
 			return;
 		}
+		if(input.equals("create")){
+			readCommand(para[0], "0", p, in, out);
+			return;
+		}
 		if (para.length <= 1 || para.length > 2) {
 			out.println("Faulty parameters in command, type 'help' for commands");
 			return;
