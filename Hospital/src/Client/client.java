@@ -52,33 +52,37 @@ public class client {
 
 		try { /* set up a key manager for client authentication */
 			SSLSocketFactory factory = null;
-			try {
-				Scanner scan = new Scanner(System.in);
-				System.out.println("Ange ditt användar ID: ");
-				String id = scan.next();
-				scan.nextLine();
-				System.out.println("Ange ditt lösenord: ");
-				String passwd = scan.next();
-				scan.nextLine();
-				char[] password = "password".toCharArray();
-				KeyStore ks = KeyStore.getInstance("JKS");
-				KeyStore ts = KeyStore.getInstance("JKS");
-				KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
-				TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
-				SSLContext ctx = SSLContext.getInstance("TLS");
-				ks.load(new FileInputStream("certificates/Client/" + id), passwd.toCharArray()); // keystore
+			do {
+				try {
+					Scanner scan = new Scanner(System.in);
+					System.out.println("Never give out your login credentials to anyone!");
+					System.out.println("Enter your user ID: ");
+					String id = scan.next();
+					scan.nextLine();
+					System.out.println("Enter your password: ");
+					String passwd = scan.next();
+					scan.nextLine();
+					char[] password = "password".toCharArray();
+					KeyStore ks = KeyStore.getInstance("JKS");
+					KeyStore ts = KeyStore.getInstance("JKS");
+					KeyManagerFactory kmf = KeyManagerFactory.getInstance("SunX509");
+					TrustManagerFactory tmf = TrustManagerFactory.getInstance("SunX509");
+					SSLContext ctx = SSLContext.getInstance("TLS");
+					ks.load(new FileInputStream("certificates/Client/" + id), passwd.toCharArray()); // keystore
+																										// password
+																										// (storepass)
+					ts.load(new FileInputStream("certificates/Client/clientTrustStore"), password); // truststore
 																									// password
-																									// (storepass)
-				ts.load(new FileInputStream("certificates/Client/clientTrustStore"), password); // truststore
-																								// password
-																								// (storepass);
-				kmf.init(ks, passwd.toCharArray()); // user password (keypass)
-				tmf.init(ts); // keystore can be used as truststore here
-				ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
-				factory = ctx.getSocketFactory();
-			} catch (Exception e) {
-				throw new IOException(e.getMessage());
-			}
+																									// (storepass);
+					kmf.init(ks, passwd.toCharArray()); // user password
+														// (keypass)
+					tmf.init(ts); // keystore can be used as truststore here
+					ctx.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
+					factory = ctx.getSocketFactory();
+				} catch (Exception e) {
+					System.err.println("Something went wrong. Try again");
+				}
+			} while (factory == null);
 			SSLSocket socket = (SSLSocket) factory.createSocket(host, port);
 			// System.out.println("\nsocket before handshake:\n" + socket +
 			// "\n");
@@ -92,25 +96,16 @@ public class client {
 			socket.startHandshake();
 
 			SSLSession session = socket.getSession();
-			//System.out.println(session.getCipherSuite());
 			X509Certificate cert = (X509Certificate) session.getPeerCertificateChain()[0];
 			String subject = cert.getSubjectDN().getName();
-			// System.out.println("certificate name (subject DN field) on
-			// certificate received from server:\n" + subject + "\n");
-			//
-			// System.out.println("issuer name: " +
-			// cert.getIssuerDN().getName());
-			// System.out.println("serial number: " + cert.getSerialNumber());
-			// System.out.println("socket after handshake:\n" + socket + "\n");
-			// System.out.println("secure connection established\n\n");
 
 			BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
 			PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			String msg, line;
-			
+
 			for (;;) {
-				while(!(line=in.readLine()).equals("-end")) {
+				while (!(line = in.readLine()).equals("-end")) {
 					System.out.println(line);
 				}
 				System.out.print(">");
@@ -120,12 +115,7 @@ public class client {
 				}
 				out.println(msg);
 				out.flush();
-//				System.out.print("sending '" + msg + "' to server...");
-//				out.println(msg);
-//				out.flush();
-//				System.out.println("done");
-//
-//				System.out.println("received '" + in.readLine() + "' from server\n");
+				
 			}
 			in.close();
 			out.close();

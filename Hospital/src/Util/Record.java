@@ -14,9 +14,6 @@ public class Record {
 	private String data;
 	private String recordId;
 	
-	/*
-	 Changed Record from objects to strings which make reading in possible
-	 */
 	public Record(String patient, String doctor, String nurse, String division, String data) {
 		this(patient, doctor, nurse, division, data, nbrRecords);		
 	}

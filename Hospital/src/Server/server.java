@@ -37,7 +37,6 @@ public class server implements Runnable {
 			SSLSocket socket = (SSLSocket) serverSocket.accept();
 			newListener();
 			SSLSession session = socket.getSession();
-			//System.out.println(session.getCipherSuite());
 			X509Certificate cert = (X509Certificate) session.getPeerCertificateChain()[0];
 			String subject = cert.getSubjectDN().getName();
 			numConnectedClients++;
@@ -62,7 +61,6 @@ public class server implements Runnable {
 			out = new PrintWriter(socket.getOutputStream(), true);
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			
-			//System.out.println(cert.getSerialNumber());
 			Person p = hospital.login(cert.getSerialNumber(), id);
 			
 			StringBuilder sb = new StringBuilder();
@@ -83,6 +81,8 @@ public class server implements Runnable {
 			socket.close();
 			numConnectedClients--;
 			System.out.println("client disconnected");
+
+			
 			System.out.println(numConnectedClients + " concurrent connection(s)\n");
 		} catch (IOException e) {
 			System.out.println("Client died: " + e.getMessage());

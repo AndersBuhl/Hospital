@@ -17,7 +17,6 @@ public class Hospital {
 	private HashMap<BigInteger, Person> persons;
 	private ArrayList<Record> records;
 	private Agent agent;
-	private String[] divisions = {"head", "knee", "shoulder", "feet", "eye"};
 
 	public Hospital() {
 		persons = new HashMap<BigInteger, Person>();
@@ -94,11 +93,19 @@ public class Hospital {
 		String splitter = " ";
 		String[] para = input.split(splitter);
 		if (input.equals("help")) {
-			out.println("Command should look like this: 'operation recordId'");
+			out.println("Command should look like this: 'operation recordId',\n"
+					+ "except create where you only need to write 'create'");
 			out.println("Commands are: read, alter, create, delete");
+			out.println("Enter 'whoami' to get current user");
+			out.println("Format: serial:id:title:division:name");
+			out.println("Enter 'quit' to quit");
 			return;
 		}
 		if(input.equals("create")){
+			readCommand(para[0], "0", p, in, out);
+			return;
+		}
+		if(input.equals("whoami")) {
 			readCommand(para[0], "0", p, in, out);
 			return;
 		}
@@ -117,6 +124,9 @@ public class Hospital {
 		Record rec = null;
 		StringBuilder sb = new StringBuilder();
 		switch (command) {
+		case "whoami":
+			out.println(p.printInfo());
+			break;
 		case "read":
 			rec = findRecord(recordId);
 			if (rec == null) {
@@ -165,6 +175,7 @@ public class Hospital {
 			sb.append("deleting ");
 			if(!deleteRecord(p, rec)) {
 				sb.append("denied ");
+				out.println("PERMISSION DENIED");
 			} else {
 				upDateRecord();
 				out.println("Record was deleted");
@@ -182,7 +193,7 @@ public class Hospital {
 			String patient;
 			String nurse;
 			String Rdata;
-			// Scanner scan = new Scanner(System.in);
+
 			out.println("Type Patient id:");
 			out.println("-end");
 			patient = in.readLine();
@@ -192,9 +203,6 @@ public class Hospital {
 			out.println("Type data about the patient:");
 			out.println("-end");
 			Rdata = in.readLine();
-//			out.println("Type record id:");
-//			out.println("-end");
-//			RrecordId = in.readLine();
 
 			Record newRec = new Record(patient, p.getId(), nurse, p.getDivision(), Rdata);
 			records.add(newRec);

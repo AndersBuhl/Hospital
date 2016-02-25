@@ -22,10 +22,7 @@ public abstract class Person {
 	public BigInteger serial() {
 		return serial;
 	}
-	/*
-	 Changed Person to String...
-	 '((String)o).id' is exchanged from equals
-	 */
+
 	public boolean equals(Object o) {
 		if(o instanceof String) {
 			return id.equals(o);
