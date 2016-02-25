@@ -7,6 +7,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+import Util.Agent;
 import Util.Doctor;
 import Util.Hospital;
 import Util.Patient;
@@ -24,7 +25,7 @@ public class MainTest {
 			BufferedReader bIn = new BufferedReader(new InputStreamReader(System.in));
 			pOut.println("Type command");
 			String s = bIn.readLine();
-			Person p = new Doctor("THE GOOD DOC", "head", "4210", null);
+			Person p = new Agent("THE GOOD DOC", "agent", "tpo13dat", null);
 			Person p1 = new Doctor("THE GOOD DOC", "head", "5218", null);
 			Person p2 = new Patient("THE GOOD PAT", "3201", null);
 			host.readInput(s,p, bIn, pOut);

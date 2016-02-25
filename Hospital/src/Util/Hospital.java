@@ -146,17 +146,27 @@ public class Hospital {
 			sb.append("alter ");			
 			if(!rec.alterRecord(p, in, out)) {
 				sb.append("denied ");
+			} else {
+				upDateRecord();
 			}
 			sb.append(recordId);
-			upDateRecord();
-
 			log(sb.toString(), p);
 			break;
 		case "delete":
-			out.println("DELETING");
-			
-
-			log("delete " + recordId, p);
+			rec = findRecord(recordId);
+			if (rec == null) {
+				out.println("The requested file: " + recordId + " was not found");
+				return;
+			}
+			sb.append("deleting ");
+			if(!deleteRecord(p, rec)) {
+				sb.append("denied ");
+			} else {
+				upDateRecord();
+				out.println("Record was deleted");
+			}
+			sb.append(recordId);
+			log(sb.toString(), p);
 			break;
 		case "create":
 			if(!p.type().equals("doctor")) {
@@ -186,7 +196,7 @@ public class Hospital {
 			records.add(newRec);
 			
 			out.println("Successfully created record " + newRec.getId());
-
+			upDateRecord();
 			log("create record " + newRec.getId(), p);
 			break;
 
@@ -265,7 +275,7 @@ public class Hospital {
 	private void upDateRecord() {
 		String filePath = new File("").getAbsolutePath();
 		try (PrintWriter out = new PrintWriter(
-				new BufferedWriter(new FileWriter(filePath + "/data/Records2.txt", true)))) {
+				new BufferedWriter(new FileWriter(filePath + "/data/Records.txt")))) {
 			for (int i = 0; i < records.size(); i++) {
 				out.println(records.get(i).printInfo());
 			}
@@ -274,5 +284,13 @@ public class Hospital {
 			return;
 		}
 		// System.out.println("Save complete \n");
+	}
+	public boolean deleteRecord(Person p, Record rec){
+			if(p.type().equals("agent")){
+				int i = records.indexOf(rec);
+				records.remove(i);
+				return true;
+			}
+		return false;
 	}
 }

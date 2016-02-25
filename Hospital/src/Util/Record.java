@@ -67,7 +67,6 @@ public class Record {
 			return false;
 		}
 	}
-		
 	public boolean equals(String s) {
 		if(s.equals(recordId)) {
 			return true;
