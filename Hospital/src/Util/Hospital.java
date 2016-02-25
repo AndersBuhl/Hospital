@@ -98,8 +98,8 @@ public class Hospital {
 			out.println("Commands are: read, alter, create, delete");
 			return;
 		}
-		if (para.length <= 1 || para.length > 2 || input.equals("help")) {
-			out.println("Faulty prameters in command, type help for commands");
+		if (para.length <= 1 || para.length > 2) {
+			out.println("Faulty parameters in command, type 'help' for commands");
 			return;
 		}
 		String command = para[0];
@@ -162,9 +162,7 @@ public class Hospital {
 			out.println("CREATING RECORD");
 			String patient;
 			String nurse;
-			String division;
 			String Rdata;
-			String RrecordId;
 			// Scanner scan = new Scanner(System.in);
 			out.println("Type Patient id:");
 			out.println("-end");
@@ -175,14 +173,16 @@ public class Hospital {
 			out.println("Type data about the patient:");
 			out.println("-end");
 			Rdata = in.readLine();
-			out.println("Type record id:");
-			out.println("-end");
-			RrecordId = in.readLine();
+//			out.println("Type record id:");
+//			out.println("-end");
+//			RrecordId = in.readLine();
 
-			Record newRec = new Record(patient, p.getId(), nurse, p.getDivision(), Rdata, RrecordId);
+			Record newRec = new Record(patient, p.getId(), nurse, p.getDivision(), Rdata);
+			records.add(newRec);
 			
+			out.println("Successfully created record " + newRec.getId());
 
-			log("create record " + recordId, p);
+			log("create record " + newRec.getId(), p);
 			break;
 
 		default:
@@ -215,11 +215,10 @@ public class Hospital {
 			case "agent":
 				if (agent == null) {
 					agent = new Agent(user[2], user[3], user[0], serial);
-					p = agent;
-					log("logged in", p);
 					savePersons();
 				}
-				return agent;
+				p = agent;
+				break;
 			case "patient":
 				p = new Patient(user[3], user[0], serial);
 				persons.put(serial, p);
@@ -249,7 +248,7 @@ public class Hospital {
 				if (!(line.startsWith("//"))) {
 					String splitter = "[:]";
 					String[] para = line.split(splitter);
-					records.add(new Record(para[0], para[1], para[2], para[3], para[4], para[5]));
+					records.add(new Record(para[0], para[1], para[2], para[3], para[4], Integer.parseInt(para[5])));
 				}
 			}
 			reader.close();

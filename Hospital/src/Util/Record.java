@@ -6,8 +6,7 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class Record {
-	private static int nbrRecords = 0;
-	private int recordNbr;
+	private static int nbrRecords = 1;
 	private String patient;
 	private String doctor;
 	private String nurse;
@@ -18,18 +17,27 @@ public class Record {
 	/*
 	 Changed Record from objects to strings which make reading in possible
 	 */
-	public Record(String patient, String doctor, String nurse, String division, String data, String recordId) {
-		this(patient, doctor, nurse, division, data, recordId, nbrRecords);		
+	public Record(String patient, String doctor, String nurse, String division, String data) {
+		this(patient, doctor, nurse, division, data, nbrRecords);		
 	}
 	
-	public Record(String patient, String doctor, String nurse, String division, String data, String recordId, int recordNbr) {
+	public Record(String patient, String doctor, String nurse, String division, String data, int recordNbr) {
 		this.patient = patient;
 		this.doctor = doctor;
 		this.nurse = nurse;
 		this.division = division;
 		this.data = data;
-		this.recordNbr = recordNbr;
-		this.recordId = recordId;
+		String id = Integer.toString(recordNbr);
+		StringBuilder sb = new StringBuilder();
+		
+		for(int i = 4; i > id.length(); i--) {
+			sb.append('0');
+		}
+		sb.append(id);
+		recordId = sb.toString();
+		if(recordNbr > nbrRecords) {
+			nbrRecords = recordNbr;
+		}
 		nbrRecords++;
 		
 	}
@@ -76,6 +84,10 @@ public class Record {
 		str.append(data + ":");
 		str.append(recordId);
 		return str.toString();
+	}
+	
+	public String getId() {
+		return recordId;
 	}
 	
 }

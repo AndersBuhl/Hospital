@@ -40,18 +40,10 @@ public class server implements Runnable {
 			System.out.println(session.getCipherSuite());
 			X509Certificate cert = (X509Certificate) session.getPeerCertificateChain()[0];
 			String subject = cert.getSubjectDN().getName();
-			// numConnectedClients++;
+			numConnectedClients++;
 			System.out.println("client connected");
-			// System.out.println("client name (cert subject DN field): " +
-			// subject);
-			// System.out.println("issuer name: " +
-			// cert.getIssuerDN().getName());
-			// System.out.println("serial number: " + cert.getSerialNumber());
-			// System.out.println(numConnectedClients + " concurrent
-			// connection(s)\n");
 
 			// CN=dic14jan, OU=Doctor, O=Head, L=Jan, ST=Unknown, C=Unknown
-			System.out.println("Subject = " + subject);
 			String[] id = new String[4];
 			for (int i = 0; i < 3; i++) {
 				id[i] = subject.substring(subject.indexOf('=') + 1, subject.indexOf(','));
@@ -73,19 +65,6 @@ public class server implements Runnable {
 			System.out.println(cert.getSerialNumber());
 			Person p = hospital.login(cert.getSerialNumber(), id);
 			
-//			StringBuilder sb = new StringBuilder();
-//			sb.append("What do you want to do? Choose a number\n");
-//			sb.append("1. Read a record\n");
-//			if(id[1].toLowerCase().equals("doctor")) {
-//				sb.append("2. Make a new record\n");
-//			}
-//			if(id[1].toLowerCase().equals("agent")) {
-//				sb.append("2. Remove a record\n");
-//			}
-//			
-//			sb.append("-end");
-//			out.println(sb.toString());
-			
 			StringBuilder sb = new StringBuilder();
 			
 			sb.append("Enter a command\n");
@@ -95,15 +74,9 @@ public class server implements Runnable {
 			
 			String clientMsg = null;
 			while ((clientMsg = in.readLine()) != null) {
-//				String rev = new StringBuilder(clientMsg).reverse().toString();
-//				System.out.println("received '" + clientMsg + "' from client");
-//				System.out.print("sending '" + rev + "' to client...");
-//				out.println(rev);
-				System.out.println(clientMsg);
 				hospital.readInput(clientMsg, p, in, out);
 				out.println("-end");
 				out.flush();
-				System.out.println("done\n");
 			}
 			in.close();
 			out.close();
