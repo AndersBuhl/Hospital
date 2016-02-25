@@ -92,7 +92,7 @@ public class client {
 			socket.startHandshake();
 
 			SSLSession session = socket.getSession();
-			System.out.println(session.getCipherSuite());
+			//System.out.println(session.getCipherSuite());
 			X509Certificate cert = (X509Certificate) session.getPeerCertificateChain()[0];
 			String subject = cert.getSubjectDN().getName();
 			// System.out.println("certificate name (subject DN field) on

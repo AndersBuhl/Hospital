@@ -159,6 +159,11 @@ public class Hospital {
 			log("delete " + recordId, p);
 			break;
 		case "create":
+			if(!p.type().equals("doctor")) {
+				out.println("PERMISSION DENIED");
+				log("create denied", p);
+				break;
+			}
 			out.println("CREATING RECORD");
 			String patient;
 			String nurse;

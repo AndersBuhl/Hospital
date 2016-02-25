@@ -36,7 +36,7 @@ public abstract class Person {
 		return id;
 	}
 	
-	protected abstract String type();
+	public abstract String type();
 	
 	public String printInfo() {
 		StringBuilder sb = new StringBuilder();

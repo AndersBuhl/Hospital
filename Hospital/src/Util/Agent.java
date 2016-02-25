@@ -8,7 +8,7 @@ public class Agent extends Person {
 	}
 
 	@Override
-	protected String type() {
+	public String type() {
 		return "agent";
 	}	
 }

@@ -9,7 +9,7 @@ public class Doctor extends Person {
 	}
 
 	@Override
-	protected String type() {
+	public String type() {
 		return "doctor";
 	}
 
