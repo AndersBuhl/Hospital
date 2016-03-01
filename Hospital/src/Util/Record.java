@@ -44,17 +44,20 @@ public class Record {
 	
 	public String getRecord(Person p) {
 		if(p.equals(patient) || p.equals(nurse) || p.equals(doctor) || p.getDivision().toLowerCase().equals(division.toLowerCase())){
-			return data;
+			String ret = "Patient ID: " + patient + "\n" + data.replaceAll("\t", "\n");
+			return ret;
 		}
 		return null;
 	}
 	
 	public String agentData() {
-		return data;
+		String ret = "Patient ID: " + patient + "\n" + data.replaceAll("\t", "\n");
+		return ret;
 	}
 	public boolean alterRecord(Person p, BufferedReader in, PrintWriter out) throws IOException{
 		if(p.equals(doctor) || p.equals(nurse)){
-			out.println(data);
+			String ret = "Patient ID: " + patient + "\n" + data.replaceAll("\t", "\n");
+			out.println(ret);
 			out.println("Type the new data:");
 			out.println("-end");
 			String s = in.readLine();

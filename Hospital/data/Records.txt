@@ -1,3 +1,3 @@
 4209:4210:4211:head:[2016-02-25 11.13.12] This patient is awsome:0007
 1234:5218:4321:eye:[2016-02-25 11.13.12] this is the cool rad data field:0009
-950501:dic14jan:dat13abu:Head:[2016-02-25 11.13.12] Help me	[2016-03-01 15.20.05] Didn't help:0011
+950501:dic14jan:dat13abu:Head:[2016-02-25 11.13.12] Help me	[2016-03-01 15.20.05] Didn't help	[2016-03-01 16.07.38] constant erection	[2016-03-01 16.08.56] Hehehe! I control you!	[2016-03-01 16.13.44] null:0011
