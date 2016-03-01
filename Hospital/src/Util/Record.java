@@ -3,6 +3,8 @@ package Util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Record {
@@ -56,7 +58,14 @@ public class Record {
 			out.println("Type the new data:");
 			out.println("-end");
 			String s = in.readLine();
-			data = s;
+			StringBuilder sb = new StringBuilder();
+			sb.append(data);
+			sb.append("\t");
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH.mm.ss");
+			Date date = new Date();
+			sb.append("[" + format.format(date) + "] ");
+			sb.append(s);
+			data = sb.toString();
 			out.println("change complete");
 			return true;
 		} else {
